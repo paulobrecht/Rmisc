@@ -1,0 +1,2 @@
+# Rmisc
+Miscellaneous R functions
