@@ -195,15 +195,15 @@ install_git_visc <- function(path, sha, ...){
          },
          local_package = {
            if(.is_git_local_repo(packageString)){
-             path <- normalizePath(packageString)
+             path <- packageString
              names(path) <- "fullpath_git_local_repo"
            } else {
-             path <- normalizePath(packageString)
+             path <- packageString
              names(path) <- "fullpath_no_git"
            }
          },
          local_remote = {
-           path <- normalizePath(packageString)
+           path <- packageString
            names(path) <- "fullpath"
          })
   if(remote_src %in% c("unknown", "nor_package_nor_remote")){
@@ -281,11 +281,14 @@ install_git_visc <- function(path, sha, ...){
 
 
 
+# annoying
+
+
 # is the provided path a local git repo?
 .is_git_local_repo <- function(path){
   test <- git2r::discover_repository(path)
   if(!is.null(test)){
-    if(git2r::discover_repository(path) == paste0(file.path(path, ".git"), .Platform$file.sep)){
+    if(normalizePath(git2r::discover_repository(path), mustWork = FALSE) == normalizePath(paste0(file.path(path, ".git"), .Platform$file.sep), mustWork = FALSE)){
       return(TRUE)
     } else {
       return(FALSE)
